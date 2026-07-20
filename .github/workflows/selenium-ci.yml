@@ -15,6 +15,11 @@ jobs:
   selenium-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      DB_HOST: 127.0.0.1
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: quiz_pengupil
 
     services:
       mysql:
@@ -53,8 +58,15 @@ jobs:
 
       - name: Start PHP built-in server
         run: |
-          php -S localhost:8000 &
-          sleep 3
+          nohup php -S 127.0.0.1:8000 -t "$GITHUB_WORKSPACE" >/tmp/quiz-php.log 2>&1 &
+          for i in {1..15}; do
+            if curl --fail --silent http://127.0.0.1:8000/login.php >/dev/null; then
+              echo "PHP server siap"
+              break
+            fi
+            sleep 1
+          done
+          curl --fail http://127.0.0.1:8000/login.php >/dev/null
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -72,11 +84,7 @@ jobs:
 
       - name: Run Selenium test suite
         env:
-          BASE_URL: http://localhost:8000
-          DB_HOST: 127.0.0.1
-          DB_USER: root
-          DB_PASSWORD: root
-          DB_NAME: quiz_pengupil
+          BASE_URL: http://127.0.0.1:8000
           CI: "true"
         run: |
           mkdir -p artifacts
