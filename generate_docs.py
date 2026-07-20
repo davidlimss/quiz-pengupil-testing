@@ -16,5 +16,5 @@ for row in cases:
 d.add_heading('4. Temuan Bug',1); d.add_paragraph('$nama digunakan alih-alih $name; error password salah tidak ditampilkan; session guard memakai key berbeda; validasi email/panjang password belum ada; output belum di-escape (risiko XSS).')
 d.add_heading('5. Artefak dan CI/CD',1); d.add_paragraph('tests/conftest.py, db_stub.py, test_login.py, test_register.py, requirements.txt, dan .github/workflows/selenium-ci.yml. Perintah: pytest tests/ -v --junitxml=artifacts/report.xml')
 d.add_heading('6. Kesimpulan',1); d.add_paragraph(f'{len(cases)} testcase mencakup skenario positif, negatif, boundary, injection, XSS, session, dan database.')
-d.add_heading('7. Repository',1); d.add_paragraph('https://github.com/hermanka/quiz-pengupil (ganti dengan URL fork pribadi setelah push).'); d.save('Laporan_Pengujian_Quiz_Pengupil.docx')
+d.add_heading('7. Repository',1); d.add_paragraph('https://github.com/davidlimss/quiz-pengupil-testing'); d.save('Laporan_Pengujian_Quiz_Pengupil.docx')
 print('created docx')
