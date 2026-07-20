@@ -42,7 +42,7 @@ def seed_default_user():
     # PHP password_hash() default pakai bcrypt, jadi kita pakai bcrypt juga di sisi test
     # supaya password_verify() di PHP bisa memverifikasi hash ini.
     # Fixed PHP-compatible bcrypt hash for "Test123!" keeps the fixture deterministic.
-    hashed = "$2y$10$gZS7kaDxXvxYqjKSuxmhqe3Cq24L0AXO6eGzWZQcPRZJXMmIYNWgO"
+    hashed = "$2y$10$afbJZruechn.v9fVedVlPe39jhUwoBLWSMupvtiIcstTUCi1BBaYy"
 
     conn = _get_connection()
     cursor = conn.cursor()
