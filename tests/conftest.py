@@ -5,10 +5,12 @@ sebelum tiap testcase dijalankan, lalu membersihkannya setelah selesai.
 """
 
 import os
+import shutil
 from pathlib import Path
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from db_stub import reset_users_table, seed_default_user
 
 BASE_URL = os.environ.get("BASE_URL", "http://localhost/quiz-pengupil-main")
@@ -26,9 +28,13 @@ def driver():
         options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1280,900")
 
-    # Selenium Manager resolves a compatible local ChromeDriver without a
-    # network download (important for offline developer machines).
-    drv = webdriver.Chrome(options=options)
+    # CI installs chromedriver explicitly. Local development falls back to
+    # Selenium Manager when no chromedriver executable is on PATH.
+    driver_binary = shutil.which("chromedriver")
+    if driver_binary:
+        drv = webdriver.Chrome(service=Service(driver_binary), options=options)
+    else:
+        drv = webdriver.Chrome(options=options)
     drv.implicitly_wait(5)
 
     yield drv
