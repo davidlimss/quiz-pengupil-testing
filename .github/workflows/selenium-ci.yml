@@ -5,10 +5,16 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: selenium-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   selenium-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     services:
       mysql:
